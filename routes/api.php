@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,3 +21,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get("/get/users",function(){
     return "Fidelis";
 });
+Route::get('/home/{name}',[HomeController::class,'index'])->name('home.index');
