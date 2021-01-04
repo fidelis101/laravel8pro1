@@ -6,9 +6,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FluentController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PaginationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\UploadController;
+use App\PaymentGateway\Payment;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\App;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +24,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/testlang/{locale}', function($locale)
+{
+    App::setlocale($locale);
+    $fruits = array("Mango","Orange","Banana","Apple","Pineapple");
+    return view('welcome',compact('fruits'));
+});
 
 Route::get('/', [ProductController::class,"index"])->name('product.index');
 
@@ -64,4 +74,12 @@ Route::get('/about',function(){
 
 Route::get('/contact',function(){
     return view('contact');
+});
+
+Route::get('/users',[PaginationController::class,'allUsers']);
+Route::get('/upload',[UploadController::class,'uploadForm']);
+Route::post('/upload',[UploadController::class,'uploadFile'])->name('upload.uploadfile');
+Route::get('/payment',function()
+{
+    return Payment::process();
 });
